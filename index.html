@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#080a10">
+<meta name="description" content="Tâches, agenda, notes, objectifs, habitudes et projets au même endroit.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Organisation">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Mon organisation</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="i-home" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></symbol><symbol id="i-check" viewBox="0 0 24 24"><path d="m9 11 3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></symbol><symbol id="i-cal" viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></symbol><symbol id="i-note" viewBox="0 0 24 24"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></symbol><symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></symbol><symbol id="i-repeat" viewBox="0 0 24 24"><path d="m17 2 4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14"/><path d="m7 22-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/></symbol><symbol id="i-folder" viewBox="0 0 24 24"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2z"/></symbol><symbol id="i-plus" viewBox="0 0 24 24"><path d="M5 12h14M12 5v14"/></symbol><symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M10 11v6M14 11v6"/></symbol><symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></symbol><symbol id="i-download" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/></symbol><symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol></svg>
+<div class="app">
+
+<nav aria-label="Navigation principale">
+  <div class="logo">Mon organisation</div>
+  <a href="#accueil"><svg class="ic" aria-hidden="true"><use href="#i-home"/></svg><span>Accueil</span></a>
+  <a href="#taches"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg><span>Tâches</span></a>
+  <a href="#agenda"><svg class="ic" aria-hidden="true"><use href="#i-cal"/></svg><span>Agenda</span></a>
+  <a href="#notes"><svg class="ic" aria-hidden="true"><use href="#i-note"/></svg><span>Notes</span></a>
+  <a href="#objectifs"><svg class="ic" aria-hidden="true"><use href="#i-target"/></svg><span>Objectifs</span></a>
+  <a href="#habitudes"><svg class="ic" aria-hidden="true"><use href="#i-repeat"/></svg><span>Habitudes</span></a>
+  <a href="#projets"><svg class="ic" aria-hidden="true"><use href="#i-folder"/></svg><span>Projets</span></a>
+</nav>
+
+<main>
+  <header class="top">
+    <h1 id="salut">Bonjour</h1>
+    <div class="tr"><small id="date"></small><span class="chip" id="sync" hidden></span><button class="btn" id="acct" type="button" hidden>Se connecter</button><button class="btn" id="install" type="button" hidden><svg class="ic" aria-hidden="true"><use href="#i-download"/></svg>Installer l'app</button></div>
+  </header>
+
+  <!-- Accueil -->
+  <section class="page" id="accueil">
+    <div class="grid">
+      <div class="glass"><p class="mu">Tâches terminées</p><p class="num"><span id="done">0</span>/<span id="total">0</span></p><div class="bar"><i id="pbar" style="--v:0%"></i></div></div>
+      <div class="glass"><p class="mu">Prochain rendez-vous</p><p class="num" style="font-size:1.6rem" id="nextd">Aucun</p><p class="mu" id="nextt">Rien de prévu cette semaine</p></div>
+      <div class="glass"><p class="mu">Avancement des objectifs</p><p class="num"><span id="avg">0</span> %</p><div class="bar"><i id="abar" style="--v:0%"></i></div></div>
+      <div class="glass wide"><h2>Note rapide</h2><textarea placeholder="Écris ici ce que tu ne veux pas oublier…"></textarea></div>
+    </div>
+  </section>
+
+  <!-- Tâches -->
+  <section class="page" id="taches">
+    <div class="grid">
+      <div class="glass wide"><h2>Nouvelle tâche</h2><form class="add" data-f="tasks"><input type="text" name="t" placeholder="Que faut-il faire ?" maxlength="120" required aria-label="Que faut-il faire ?"><select name="p" aria-label="Priorité"><option value="hi">À faire en priorité</option><option value="mid" selected>Cette semaine</option><option value="lo">Quand j'ai le temps</option></select><button class="btn main" type="submit"><svg class="ic" aria-hidden="true"><use href="#i-plus"/></svg>Ajouter</button><button class="btn danger" type="button" data-clear="tasks"><svg class="ic" aria-hidden="true"><use href="#i-trash"/></svg>Tout supprimer</button></form></div>
+      <div class="glass wide"><h2>À faire en priorité</h2><ul class="list" data-p="hi"></ul></div>
+      <div class="glass"><h2>Cette semaine</h2><ul class="list" data-p="mid"></ul></div>
+      <div class="glass"><h2>Quand j'ai le temps</h2><ul class="list" data-p="lo"></ul></div>
+    </div>
+  </section>
+
+  <!-- Agenda -->
+  <section class="page" id="agenda">
+    <div class="glass"><h2>Nouvel événement</h2><form class="add" data-f="events"><input type="text" name="t" placeholder="Ex. 14 h Point d'équipe" maxlength="120" required aria-label="Ex. 14 h Point d'équipe"><select name="day" aria-label="Jour"><option value="0" selected>Lundi</option><option value="1">Mardi</option><option value="2">Mercredi</option><option value="3">Jeudi</option><option value="4">Vendredi</option><option value="5">Samedi</option><option value="6">Dimanche</option></select><button class="btn main" type="submit"><svg class="ic" aria-hidden="true"><use href="#i-plus"/></svg>Ajouter</button><button class="btn danger" type="button" data-clear="events"><svg class="ic" aria-hidden="true"><use href="#i-trash"/></svg>Tout supprimer</button></form></div>
+    <div class="glass"><h2>Semaine en cours</h2><div class="week" id="week"></div></div>
+  </section>
+
+  <!-- Notes -->
+  <section class="page" id="notes">
+    <div class="grid">
+      <div class="glass"><h2>Idées</h2><textarea placeholder="Tes idées du moment…"></textarea></div>
+      <div class="glass"><h2>À retenir</h2><textarea placeholder="Les infos importantes…"></textarea></div>
+      <div class="glass"><h2>Journal</h2><textarea placeholder="Comment s'est passée ta journée ?"></textarea></div>
+    </div>
+  </section>
+
+  <!-- Objectifs -->
+  <section class="page" id="objectifs">
+    <div class="glass"><h2>Nouvel objectif</h2><form class="add" data-f="goals"><input type="text" name="t" placeholder="Nom de l'objectif" maxlength="120" required aria-label="Nom de l'objectif"><input type="number" name="v" min="0" max="100" placeholder="Avancement en %" aria-label="Avancement en pourcentage"><button class="btn main" type="submit"><svg class="ic" aria-hidden="true"><use href="#i-plus"/></svg>Ajouter</button><button class="btn danger" type="button" data-clear="goals"><svg class="ic" aria-hidden="true"><use href="#i-trash"/></svg>Tout supprimer</button></form></div>
+    <div class="grid" id="goals"></div>
+  </section>
+
+  <!-- Habitudes -->
+  <section class="page" id="habitudes">
+    <div class="glass"><h2>Suivi de la semaine</h2>
+      <div class="tbl"><div class="habits">
+        <span></span><span class="h">L</span><span class="h">M</span><span class="h">M</span><span class="h">J</span><span class="h">V</span><span class="h">S</span><span class="h">D</span>
+        <span>Boire de l'eau</span><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox">
+        <span>Sport</span><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox">
+        <span>Lecture</span><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox">
+        <span>Dormir avant 23 h</span><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox"><input type="checkbox">
+      </div></div></div>
+  </section>
+
+  <!-- Projets -->
+  <section class="page" id="projets">
+    <div class="glass"><h2>Nouveau projet</h2><form class="add" data-f="projects"><input type="text" name="t" placeholder="Nom du projet" maxlength="120" required aria-label="Nom du projet"><select name="s" aria-label="Étape"><option value="0" selected>À démarrer</option><option value="1">En cours</option><option value="2">Terminé</option></select><button class="btn main" type="submit"><svg class="ic" aria-hidden="true"><use href="#i-plus"/></svg>Ajouter</button><button class="btn danger" type="button" data-clear="projects"><svg class="ic" aria-hidden="true"><use href="#i-trash"/></svg>Tout supprimer</button></form></div>
+    <div class="cols">
+      <div class="glass"><h2>À démarrer</h2><div id="pj0"></div></div>
+      <div class="glass"><h2>En cours</h2><div id="pj1"></div></div>
+      <div class="glass"><h2>Terminés</h2><div id="pj2"></div></div>
+    </div>
+  </section>
+
+</main>
+</div>
+
+<dialog id="login" aria-labelledby="lt">
+  <h2 id="lt">Synchroniser mes données</h2>
+  <p class="mu">Connecte-toi pour retrouver tes tâches, notes et objectifs sur tous tes appareils.</p>
+  <form id="lf">
+    <input type="email" name="email" placeholder="Adresse e-mail" autocomplete="email" required aria-label="Adresse e-mail">
+    <input type="password" name="password" placeholder="Mot de passe (6 caractères minimum)" autocomplete="current-password" minlength="6" required aria-label="Mot de passe">
+    <p class="mu" id="lmsg" role="status"></p>
+    <div class="add">
+      <button class="btn main" type="submit">Se connecter</button>
+      <button class="btn" type="button" id="signup">Créer un compte</button>
+      <button class="btn" type="button" id="lclose">Fermer</button>
+    </div>
+  </form>
+</dialog>
+<script src="config.js"></script>
+<script>
+const $=s=>document.querySelector(s);
+const get=k=>{try{return localStorage.getItem(k)}catch{return null}};
+const put=(k,v)=>{try{localStorage.setItem(k,v)}catch{}};
+const el=(t,p={},...k)=>{const e=Object.assign(document.createElement(t),p);e.append(...k);return e};
+const xbtn=(label,icon,fn)=>el('button',{type:'button',className:'x',title:label,innerHTML:`<svg class="ic" aria-hidden="true"><use href="#i-${icon}"/></svg>`,onclick:fn});
+const empty=t=>el('p',{className:'mu'},t);
+const load=(k,seed)=>{let a;try{a=JSON.parse(get('dash:'+k))}catch{}return Array.isArray(a)?a:seed};
+const DAYS=['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche'];
+
+const d=new Date(),h=d.getHours();
+$('#salut').textContent=h<6||h>=18?'Bonsoir':'Bonjour';
+$('#date').textContent=d.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'});
+
+// Données (exemples la première fois, puis ce que tu enregistres)
+const store={
+  tasks:load('tasks',[['Envoyer le dossier','hi'],['Réviser le chapitre 4','hi'],['Faire les courses','mid'],['Appeler le médecin','mid'],['Ranger le bureau','mid'],['Trier les photos','lo'],['Lire un livre','lo'],['Planifier les vacances','lo']].map(([t,p])=>({t,p,d:0}))),
+  events:load('events',[['9 h Cours',0],['18 h Sport',0],['10 h Projet',1],["14 h Point d'équipe",2],['12 h Déjeuner',3],['16 h Révisions',3],['11 h Rendu',4],['10 h Courses',5],['17 h Préparer la semaine',6]].map(([t,day])=>({t,day}))),
+  goals:load('goals',[['Lire 12 livres',58],['Courir 5 km',60],['Économiser 500 €',64],['Apprendre une langue',35]].map(([t,v])=>({t,v}))),
+  projects:load('projects',[['Refaire mon CV',0],['Organiser un voyage',0],['Site personnel',1],['Rapport de stage',1],['Déménagement',2],['Dossier administratif',2]].map(([t,s])=>({t,s}))),
+  // Notes (4 zones de texte) et habitudes (4 habitudes x 7 jours) ; reprend les anciennes données locales
+  notes:load('notes',[0,1,2,3].map(i=>get('dash2:'+i)||'')),
+  habits:load('habits',Array.from({length:28},(_,i)=>get('dash2:'+(i+4))==='1'?1:0))
+};
+const persist=k=>{put('dash:'+k,JSON.stringify(store[k]));touch(k)};
+const commit=k=>{persist(k);drawers[k]();stats()};
+
+function drawTasks(){
+  document.querySelectorAll('[data-p]').forEach(ul=>{
+    const rows=store.tasks.flatMap((x,i)=>x.p===ul.dataset.p?[[x,i]]:[]).map(([x,i])=>{
+      const c=el('input',{type:'checkbox',checked:!!x.d,onchange(){x.d=this.checked?1:0;persist('tasks');stats()}});
+      return el('li',{},el('label',{},c,x.t),xbtn('Supprimer la tâche','x',()=>{store.tasks.splice(i,1);commit('tasks')}));
+    });
+    ul.replaceChildren(...(rows.length?rows:[el('li',{className:'mu'},'Rien ici pour le moment.')]));
+  });
+}
+function drawEvents(){
+  $('#week').replaceChildren(...DAYS.map((n,day)=>el('div',{className:'day'},el('h3',{},n),
+    ...store.events.flatMap((x,i)=>x.day===day?[[x,i]]:[]).map(([x,i])=>
+      el('div',{className:'ev '+['','b','c'][i%3]},el('span',{},x.t),xbtn("Supprimer l'événement",'x',()=>{store.events.splice(i,1);commit('events')}))))));
+}
+function drawGoals(){
+  const rows=store.goals.map((x,i)=>{
+    const pct=el('p',{className:'mu'}),bar=el('i');
+    const set=()=>{pct.textContent=x.v+' %';bar.style.setProperty('--v',x.v+'%')};set();
+    const r=el('input',{type:'range',min:0,max:100,value:x.v,className:'rg',title:'Avancement',oninput(){x.v=+this.value;set();persist('goals');stats()}});
+    return el('div',{className:'glass'},el('div',{className:'hd'},el('h2',{},x.t),xbtn("Supprimer l'objectif",'x',()=>{store.goals.splice(i,1);commit('goals')})),pct,el('div',{className:'bar'},bar),r);
+  });
+  $('#goals').replaceChildren(...(rows.length?rows:[el('div',{className:'glass'},empty('Aucun objectif pour le moment.'))]));
+}
+function drawProjects(){
+  [0,1,2].forEach(s=>{
+    const rows=store.projects.flatMap((x,i)=>x.s===s?[[x,i]]:[]).map(([x,i])=>
+      el('div',{className:'card'},el('span',{},x.t),
+        ...(s<2?[xbtn("Passer à l'étape suivante",'arrow',()=>{x.s++;commit('projects')})]:[]),
+        xbtn('Supprimer le projet','x',()=>{store.projects.splice(i,1);commit('projects')})));
+    $('#pj'+s).replaceChildren(...(rows.length?rows:[empty('Rien ici.')]));
+  });
+}
+const drawers={tasks:drawTasks,events:drawEvents,goals:drawGoals,projects:drawProjects};
+
+// Chiffres de l'accueil
+function stats(){
+  const t=store.tasks,n=t.filter(x=>x.d).length;
+  $('#done').textContent=n;$('#total').textContent=t.length;
+  $('#pbar').style.setProperty('--v',(t.length?n/t.length*100:0)+'%');
+  const g=store.goals,avg=g.length?Math.round(g.reduce((s,x)=>s+x.v,0)/g.length):0;
+  $('#avg').textContent=avg;$('#abar').style.setProperty('--v',avg+'%');
+  const today=(new Date().getDay()+6)%7;
+  for(let o=0;o<7;o++){
+    const day=(today+o)%7,ev=store.events.find(x=>x.day===day);
+    if(ev){$('#nextd').textContent=o?DAYS[day]:"Aujourd'hui";$('#nextt').textContent=ev.t;return}
+  }
+  $('#nextd').textContent='Aucun';$('#nextt').textContent='Rien de prévu cette semaine';
+}
+
+// Formulaires « Ajouter » et boutons « Tout supprimer »
+const make={
+  tasks:f=>({t:f.t.value.trim(),p:f.p.value,d:0}),
+  events:f=>({t:f.t.value.trim(),day:+f.day.value}),
+  goals:f=>({t:f.t.value.trim(),v:Math.min(100,Math.max(0,+f.v.value||0))}),
+  projects:f=>({t:f.t.value.trim(),s:+f.s.value})
+};
+document.querySelectorAll('form[data-f]').forEach(f=>{
+  const k=f.dataset.f;
+  f.onsubmit=e=>{
+    e.preventDefault();
+    const x=make[k](f);if(!x.t)return;
+    store[k].push(x);f.t.value='';if(f.v)f.v.value='';
+    commit(k);f.t.focus();
+  };
+});
+document.querySelectorAll('[data-clear]').forEach(b=>b.onclick=()=>{
+  const k=b.dataset.clear;
+  if(store[k].length&&confirm('Tout supprimer ?')){store[k].length=0;commit(k)}
+});
+
+// Notes et habitudes (synchronisées comme le reste)
+const areas=[...document.querySelectorAll('textarea')],boxes=[...document.querySelectorAll('.habits input')];
+drawers.notes=()=>areas.forEach((t,i)=>{if(document.activeElement!==t)t.value=store.notes[i]||''});
+drawers.habits=()=>boxes.forEach((b,i)=>{b.checked=!!store.habits[i]});
+areas.forEach((t,i)=>t.addEventListener('input',()=>{store.notes[i]=t.value;persist('notes')}));
+boxes.forEach((b,i)=>b.addEventListener('input',()=>{store.habits[i]=b.checked?1:0;persist('habits')}));
+
+// Synchronisation Supabase (facultative : sans config.js, tout reste sur l'appareil)
+const CFG=window.SUPABASE||{},cloud=!!(CFG.url&&CFG.key);
+const KINDS=['tasks','events','goals','projects','notes','habits'];
+const BLANK=()=>({tasks:[],events:[],goals:[],projects:[],notes:['','','',''],habits:Array(28).fill(0)});
+const del=k=>{try{localStorage.removeItem(k)}catch{}};
+let session,meta={},busy=false,again=false,timer;
+try{session=JSON.parse(get('dash:session'))}catch{}
+try{meta=JSON.parse(get('dash:meta'))||{}}catch{}
+const sess=s=>{session=s;s?put('dash:session',JSON.stringify(s)):del('dash:session')};
+function touch(k){meta[k]=Date.now();put('dash:meta',JSON.stringify(meta));clearTimeout(timer);timer=setTimeout(sync,800)}
+
+const LABEL={off:'Non connecté',run:'Synchronisation…',ok:'Synchronisé',err:'Hors connexion, nouvel essai bientôt'};
+function badge(s){
+  if(!cloud)return;
+  $('#sync').hidden=$('#acct').hidden=false;
+  $('#sync').textContent=LABEL[session?s||'ok':'off'];
+  $('#acct').textContent=session?'Se déconnecter':'Se connecter';
+}
+async function auth(path,body){
+  const r=await fetch(CFG.url+'/auth/v1/'+path,{method:'POST',headers:{apikey:CFG.key,'Content-Type':'application/json'},body:JSON.stringify(body)});
+  const j=await r.json().catch(()=>({}));
+  if(!r.ok)throw new Error(j.msg||j.error_description||j.message||'Connexion refusée');
+  return j;
+}
+function keep(j){
+  if(!j.access_token)return false;
+  sess({access:j.access_token,refresh:j.refresh_token,exp:j.expires_at||Math.floor(Date.now()/1000)+j.expires_in,uid:j.user.id});
+  return true;
+}
+async function token(){
+  if(session.exp-60<Date.now()/1000){
+    try{keep(await auth('token?grant_type=refresh_token',{refresh_token:session.refresh}))}
+    catch(e){if(!(e instanceof TypeError)){sess(null);badge()}throw e}
+  }
+  return session.access;
+}
+async function rest(path,opts={}){
+  const r=await fetch(CFG.url+'/rest/v1/'+path,{...opts,headers:{apikey:CFG.key,Authorization:'Bearer '+await token(),'Content-Type':'application/json',...opts.headers}});
+  if(!r.ok)throw new Error('Erreur '+r.status);
+  const t=await r.text();return t?JSON.parse(t):null;
+}
+// La version la plus récente de chaque liste l'emporte, appareil par appareil
+async function sync(){
+  if(!cloud||!session||navigator.onLine===false)return;
+  if(busy){again=true;return}
+  busy=true;badge('run');
+  try{
+    const rows=await rest('dashboard?select=kind,data,ts');
+    const remote=Object.fromEntries(rows.map(r=>[r.kind,r])),push=[];
+    for(const k of KINDS){
+      const r=remote[k],rt=r?Number(r.ts):0,lt=meta[k]||0;
+      if(r&&rt>lt){
+        store[k].splice(0,store[k].length,...r.data);
+        meta[k]=rt;put('dash:'+k,JSON.stringify(store[k]));drawers[k]();
+      }else if(!r||lt>rt)push.push([k,lt,lt||Date.now()]);
+    }
+    if(push.length){
+      await rest('dashboard?on_conflict=user_id,kind',{method:'POST',headers:{Prefer:'resolution=merge-duplicates,return=minimal'},
+        body:JSON.stringify(push.map(([k,,ts])=>({user_id:session.uid,kind:k,data:store[k],ts})))});
+      push.forEach(([k,lt,ts])=>{if((meta[k]||0)===lt)meta[k]=ts});
+    }
+    put('dash:meta',JSON.stringify(meta));stats();badge('ok');
+  }catch(e){badge('err')}
+  busy=false;
+  if(again){again=false;sync()}
+}
+
+// Fenêtre de connexion
+const lf=$('#lf'),dlg=$('#login'),msg=t=>{$('#lmsg').textContent=t};
+async function enter(call){
+  msg('Connexion…');
+  try{
+    if(!keep(await call())){msg('Compte créé. Ouvre le mail de confirmation, puis connecte-toi.');return}
+    msg('');dlg.close();onSession();
+  }catch(e){msg(e instanceof TypeError?'Pas de connexion Internet.':e.message)}
+}
+function onSession(){
+  // Autre compte sur cet appareil : on repart d'une page vide pour ne rien mélanger
+  if(get('dash:uid')&&get('dash:uid')!==session.uid){
+    const b=BLANK();
+    KINDS.forEach(k=>{store[k].splice(0,store[k].length,...b[k]);put('dash:'+k,JSON.stringify(store[k]));drawers[k]()});
+    meta={};put('dash:meta','{}');stats();
+  }
+  put('dash:uid',session.uid);sync();
+}
+lf.onsubmit=e=>{e.preventDefault();enter(()=>auth('token?grant_type=password',{email:lf.email.value.trim(),password:lf.password.value}))};
+$('#signup').onclick=()=>{if(lf.reportValidity())enter(()=>auth('signup',{email:lf.email.value.trim(),password:lf.password.value}))};
+$('#lclose').onclick=()=>dlg.close();
+$('#acct').onclick=()=>{if(session){sess(null);badge()}else dlg.showModal()};
+badge('run');sync();
+addEventListener('online',sync);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)sync()});
+setInterval(()=>{if(!document.hidden)sync()},60000);
+
+Object.values(drawers).forEach(f=>f());stats();
+
+// Webapp : hors ligne et installation
+if('serviceWorker' in navigator&&location.protocol.startsWith('http'))
+  addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
+let installEv;
+addEventListener('beforeinstallprompt',e=>{e.preventDefault();installEv=e;$('#install').hidden=false});
+addEventListener('appinstalled',()=>{$('#install').hidden=true});
+$('#install').onclick=async()=>{if(!installEv)return;installEv.prompt();await installEv.userChoice;installEv=null;$('#install').hidden=true};
+</script>
+</body>
+</html>
