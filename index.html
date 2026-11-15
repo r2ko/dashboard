@@ -342,7 +342,7 @@ Object.values(drawers).forEach(f=>f());stats();
     const m=Math.min(6,2600/r.width),ry=(x/r.width-.5)*m*2,rx=(.5-y/r.height)*m*2;
     g.style.setProperty('--rx',rx.toFixed(2)+'deg');g.style.setProperty('--ry',ry.toFixed(2)+'deg');g.style.setProperty('--sx',(-ry*3).toFixed(1)+'px');
   };
-  const hit=e=>{ev=e;raf=raf||requestAnimationFrame(run)},end=()=>{off(cur);cur=null};
+  const hit=e=>{if(e.pointerType==='touch')return;ev=e;raf=raf||requestAnimationFrame(run)},end=()=>{off(cur);cur=null};
   addEventListener('pointermove',hit,{passive:true});
   addEventListener('pointerdown',hit,{passive:true});
   addEventListener('pointerup',e=>{if(e.pointerType==='touch')end()});
