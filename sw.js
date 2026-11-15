@@ -1,4 +1,4 @@
-const V='organisation-v5';
+const V='organisation-v6';
 const FILES=['./','./index.html','./style.css','./manifest.webmanifest','./config.js','./icon.svg','./icon-192.png','./icon-512.png','./apple-touch-icon.png'];
 
 self.addEventListener('install',e=>{

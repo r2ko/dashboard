@@ -330,3 +330,12 @@ a,button,label,input,select{touch-action:manipulation}
   .habits{gap:12px 6px}
   .rg{height:32px}
 }
+
+/* ===== Téléphone : fond fixe, animations en simple fondu ===== */
+@media (hover:none),(max-width:700px){
+  body::before,.orb i{animation:none}
+  .page:target .glass,main:not(:has(.page:target)) #accueil .glass{animation-duration:.4s}
+  @keyframes rise{from{opacity:0}}
+  @keyframes pop{from{opacity:0}}
+  @keyframes dlg{from{opacity:0}}
+}
