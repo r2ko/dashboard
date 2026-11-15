@@ -1,6 +1,6 @@
 :root{
-  --bg:#080a10;--tx:#eef1f8;--mu:#9aa3b8;
-  --cy:#6ee7d8;--am:#ffb45e;--vi:#8b7bff;--ro:#ff7aa8;
+  --bg:#080a10;--tx:#eef1f8;--mu:#a3abbf;
+  --cy:#8ccfc6;--am:#dcb68f;--vi:#9b97d6;--ro:#d99ab3;
   --glass:rgba(255,255,255,.07);--line:rgba(255,255,255,.15);
   color-scheme:dark
 }
@@ -15,10 +15,10 @@ body{
 body::before{
   content:"";position:fixed;inset:-25%;z-index:-1;
   background:
-    radial-gradient(38% 38% at 18% 22%,rgba(91,61,245,.5),transparent),
-    radial-gradient(34% 34% at 82% 28%,rgba(14,150,160,.42),transparent),
-    radial-gradient(30% 30% at 66% 88%,rgba(255,154,60,.28),transparent),
-    radial-gradient(28% 28% at 10% 85%,rgba(255,80,150,.22),transparent);
+    radial-gradient(38% 38% at 18% 22%,rgba(88,84,170,.3),transparent),
+    radial-gradient(34% 34% at 82% 28%,rgba(52,130,140,.26),transparent),
+    radial-gradient(30% 30% at 66% 88%,rgba(200,150,110,.14),transparent),
+    radial-gradient(28% 28% at 10% 85%,rgba(190,110,150,.12),transparent);
   animation:drift 28s ease-in-out infinite alternate
 }
 @keyframes drift{to{transform:translate3d(5%,4%,0) scale(1.12)}}
@@ -93,13 +93,13 @@ input[type=checkbox]{
 }
 input[type=checkbox]:checked{
   background:linear-gradient(135deg,var(--cy),var(--vi));border-color:transparent;
-  box-shadow:0 0 14px rgba(110,231,216,.45)
+  box-shadow:0 0 14px rgba(140,207,198,.45)
 }
 label:has(input:checked){color:var(--mu);text-decoration:line-through}
 .chip{font-size:.78rem;padding:3px 10px;border-radius:99px;background:rgba(255,255,255,.1);color:var(--mu);white-space:nowrap}
-.hi{background:rgba(255,122,168,.2);color:#ffc2d6}
-.mid{background:rgba(255,180,94,.2);color:#ffd9ad}
-.lo{background:rgba(110,231,216,.18);color:#b5f5ec}
+.hi{background:rgba(217,154,179,.2);color:#ffc2d6}
+.mid{background:rgba(220,182,143,.2);color:#ffd9ad}
+.lo{background:rgba(140,207,198,.18);color:#b5f5ec}
 
 /* Progression */
 .bar{height:9px;border-radius:9px;background:rgba(255,255,255,.1);overflow:hidden;margin-top:10px}
@@ -109,8 +109,8 @@ label:has(input:checked){color:var(--mu);text-decoration:line-through}
 .week{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:10px}
 .day{border-radius:18px;padding:12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);min-height:150px}
 .day h3{font-size:.95rem;margin-bottom:8px}
-.ev{font-size:.82rem;padding:6px 8px;border-radius:10px;margin-bottom:6px;background:rgba(139,123,255,.28)}
-.ev.b{background:rgba(110,231,216,.22)}.ev.c{background:rgba(255,180,94,.25)}
+.ev{font-size:.82rem;padding:6px 8px;border-radius:10px;margin-bottom:6px;background:rgba(155,151,214,.28)}
+.ev.b{background:rgba(140,207,198,.22)}.ev.c{background:rgba(220,182,143,.25)}
 .cols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
 .card{padding:14px;border-radius:16px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);margin-bottom:10px}
 .tbl{overflow-x:auto}
@@ -132,9 +132,9 @@ textarea::placeholder{color:var(--mu)}
 .btn:hover{background:rgba(255,255,255,.2)}
 .btn:active{transform:scale(.97)}
 .btn:focus-visible,.x:focus-visible,select:focus-visible{outline:2px solid var(--cy);outline-offset:2px}
-.btn.main{background:linear-gradient(135deg,rgba(110,231,216,.45),rgba(139,123,255,.5))}
-.btn.danger{color:#ffc2d6;background:rgba(255,122,168,.14)}
-.btn.danger:hover{background:rgba(255,122,168,.28)}
+.btn.main{background:linear-gradient(135deg,rgba(140,207,198,.45),rgba(155,151,214,.5))}
+.btn.danger{color:#ffc2d6;background:rgba(217,154,179,.14)}
+.btn.danger:hover{background:rgba(217,154,179,.28)}
 .x{margin-left:auto;flex:none;display:grid;place-items:center;width:34px;height:34px;border:0;border-radius:11px;background:transparent;color:var(--mu);cursor:pointer;transition:background .2s,color .2s}
 .x:hover{background:rgba(255,255,255,.1);color:var(--ro)}
 
@@ -186,3 +186,109 @@ dialog h2{margin-bottom:6px}
 dialog form{display:grid;gap:12px;margin-top:14px}
 dialog input{width:100%}
 dialog .add .btn{flex:1 1 120px}
+
+/* ===== Verre liquide 3D et mouvement ===== */
+body{isolation:isolate}
+
+/* Sphères et anneau 3D derrière le verre : le verre les réfracte en les floutant */
+.scene{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden;--px:0;--py:0}
+.orb{position:absolute;left:var(--x);top:var(--y);width:var(--s);aspect-ratio:1;perspective:800px;
+  transform:translate3d(calc(var(--px)*var(--d)*1px),calc(var(--py)*var(--d)*1px),0);transition:transform .9s cubic-bezier(.2,.8,.2,1)}
+.orb i{position:relative;display:block;width:100%;height:100%;border-radius:50%;opacity:.55;animation:float var(--t,16s) ease-in-out infinite alternate;
+  background:radial-gradient(circle at 34% 30%,color-mix(in srgb,var(--c) 55%,#fff),var(--c) 42%,color-mix(in srgb,var(--c) 35%,#05060a));
+  box-shadow:inset -16px -22px 44px rgba(0,0,0,.4),inset 10px 14px 30px rgba(255,255,255,.28),0 50px 90px -24px color-mix(in srgb,var(--c) 60%,transparent)}
+.orb i::after{content:"";position:absolute;left:17%;top:11%;width:36%;height:21%;border-radius:50%;transform:rotate(-32deg);filter:blur(3px);
+  background:radial-gradient(closest-side,rgba(255,255,255,.5),transparent)}
+@keyframes float{to{transform:translate3d(0,-34px,0) rotate(8deg) scale(1.04)}}
+.o1{--x:60%;--y:4%;--s:clamp(170px,24vw,340px);--c:#6f6ca6;--d:-90}
+.o2{--x:2%;--y:58%;--s:clamp(150px,22vw,300px);--c:#55908f;--d:70;--t:19s}
+.o3{--x:80%;--y:68%;--s:clamp(90px,12vw,170px);--c:#a98068;--d:-140;--t:13s}
+.o4{--x:34%;--y:30%;--s:clamp(220px,32vw,460px);--d:50}
+.o4 i{opacity:.28;box-shadow:none;filter:blur(1px);animation:spin 28s linear infinite;
+  background:conic-gradient(#9b97d6,#8ccfc6,#dcb68f,#d99ab3,#9b97d6);
+  -webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 26px),#000 calc(100% - 25px));mask:radial-gradient(farthest-side,transparent calc(100% - 26px),#000 calc(100% - 25px))}
+.o4 i::after{display:none}
+@keyframes spin{from{transform:rotate3d(1,.45,.2,0deg)}to{transform:rotate3d(1,.45,.2,360deg)}}
+
+/* Verre : teinte, bords lumineux, lumière qui suit le doigt ou la souris */
+@supports (backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px)){
+  .glass,nav,.top{
+    background:linear-gradient(135deg,rgba(255,255,255,.13),rgba(255,255,255,.03) 42%,rgba(255,255,255,.07)),rgba(14,16,28,.3);
+    -webkit-backdrop-filter:blur(26px) saturate(190%) brightness(1.1);backdrop-filter:blur(26px) saturate(190%) brightness(1.1)
+  }
+}
+.glass,nav,.top{box-shadow:inset 0 1px 0 rgba(255,255,255,.42),inset 0 -1px 0 rgba(255,255,255,.06),inset 0 0 30px rgba(255,255,255,.05),0 2px 6px rgba(0,0,0,.25),var(--sx,0px) 22px 56px rgba(0,0,0,.45),0 46px 90px -34px rgba(88,84,170,.2)}
+.glass,.top{position:relative;isolation:isolate;--mx:50%;--my:-30%}
+.glass>*,.top>*{position:relative;z-index:1}
+.glass::before,.top::before{content:"";position:absolute;inset:0;z-index:2;border-radius:inherit;padding:1.3px;pointer-events:none;
+  background:radial-gradient(240px circle at var(--mx) var(--my),rgba(255,255,255,.95),transparent 65%),linear-gradient(135deg,rgba(255,255,255,.5),rgba(255,255,255,.06) 38%,rgba(255,255,255,.06) 66%,rgba(255,255,255,.28));
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);mask-composite:exclude}
+.glass::after,.top::after{content:"";position:absolute;inset:0;z-index:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .4s;
+  background:radial-gradient(380px circle at var(--mx) var(--my),rgba(255,255,255,.2),rgba(255,255,255,.05) 40%,transparent 70%)}
+.glass.on::after,.top.on::after{opacity:1}
+.glass{transform:perspective(900px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transition:transform .6s cubic-bezier(.2,.9,.25,1),box-shadow .6s}
+.glass.on{transition-duration:.12s}
+
+/* Entrée en 3D des cartes, l'une après l'autre */
+.page:target,main:not(:has(.page:target)) #accueil{animation:none}
+.page:target .glass,main:not(:has(.page:target)) #accueil .glass{animation:rise .8s cubic-bezier(.2,.9,.25,1) backwards;animation-delay:calc(var(--i,0)*80ms)}
+.page .glass:nth-child(2){--i:1}.page .glass:nth-child(3){--i:2}.page .glass:nth-child(4){--i:3}.page .glass:nth-child(n+5){--i:4}
+@keyframes rise{from{opacity:0;translate:0 40px;scale:.95;transform:perspective(900px) rotateX(18deg) rotateY(0deg)}}
+.list li,.card,.ev{animation:pop .5s cubic-bezier(.34,1.56,.64,1) backwards}
+@keyframes pop{from{opacity:0;scale:.92;translate:0 8px}}
+.list li,.card,.day{transition:transform .35s cubic-bezier(.34,1.56,.64,1),background .25s,border-color .25s}
+@media (hover:hover){.list li:hover,.card:hover,.day:hover{transform:translateY(-3px);background:rgba(255,255,255,.09);border-color:rgba(255,255,255,.2)}}
+
+/* Navigation : icônes à ressort, page active allumée */
+nav a{transition:background .25s,color .25s,transform .35s cubic-bezier(.34,1.56,.64,1)}
+nav a .ic{transition:transform .45s cubic-bezier(.34,1.56,.64,1),filter .3s}
+nav a:active{transform:scale(.94)}
+@media (hover:hover){nav a:hover .ic{transform:translateY(-2px) scale(1.12)}}
+body:has(#accueil:target) [href="#accueil"] .ic,body:has(#taches:target) [href="#taches"] .ic,body:has(#agenda:target) [href="#agenda"] .ic,body:has(#notes:target) [href="#notes"] .ic,
+body:has(#objectifs:target) [href="#objectifs"] .ic,body:has(#habitudes:target) [href="#habitudes"] .ic,body:has(#projets:target) [href="#projets"] .ic,body:not(:has(.page:target)) [href="#accueil"] .ic{
+  color:var(--cy);filter:drop-shadow(0 0 7px rgba(140,207,198,.45))}
+
+/* Boutons : reflet qui glisse, appui élastique */
+.btn{position:relative;overflow:hidden;transition:background .2s,transform .35s cubic-bezier(.34,1.56,.64,1),box-shadow .3s}
+.btn::after{content:"";position:absolute;inset:0;pointer-events:none;transform:translateX(-120%);transition:transform .7s cubic-bezier(.2,.8,.2,1);
+  background:linear-gradient(105deg,transparent 30%,rgba(255,255,255,.45) 50%,transparent 70%)}
+.btn:active{transform:scale(.95)}
+@media (hover:hover){
+  .btn:hover{transform:translateY(-2px);box-shadow:inset 0 1px 0 rgba(255,255,255,.4),0 10px 24px rgba(0,0,0,.35)}
+  .btn.main:hover{box-shadow:inset 0 1px 0 rgba(255,255,255,.45),0 10px 30px rgba(140,207,198,.3),0 4px 18px rgba(155,151,214,.35)}
+  .btn:hover::after{transform:translateX(120%)}
+  .btn:active{transform:translateY(0) scale(.95)}
+}
+
+/* Cases : coche dessinée et rebond */
+input[type=checkbox]{transition:background .25s,box-shadow .25s,transform .4s cubic-bezier(.34,1.56,.64,1)}
+input[type=checkbox]:checked{animation:tick .45s cubic-bezier(.34,1.56,.64,1);
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23080a10' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m5 12.5 4.5 4.5L19 7.5'/%3E%3C/svg%3E") center/72% no-repeat,linear-gradient(135deg,var(--cy),var(--vi))}
+@keyframes tick{40%{transform:scale(.78)}}
+
+/* Chiffres et barres en relief */
+.num{font-variant-numeric:tabular-nums;text-shadow:0 1px 0 rgba(255,255,255,.3),0 10px 30px rgba(140,207,198,.12)}
+.bar{box-shadow:inset 0 1px 3px rgba(0,0,0,.45)}
+.bar i{transition:width 1s cubic-bezier(.2,.9,.25,1);box-shadow:0 0 12px rgba(140,207,198,.12);
+  background:linear-gradient(180deg,rgba(255,255,255,.38),transparent 55%),linear-gradient(90deg,var(--vi),var(--cy))}
+
+/* Fenêtre de connexion */
+dialog[open]{animation:dlg .55s cubic-bezier(.34,1.3,.5,1)}
+dialog[open]::backdrop{animation:fade .4s}
+@keyframes dlg{from{opacity:0;translate:0 30px;scale:.9;transform:perspective(800px) rotateX(14deg)}}
+@keyframes fade{from{opacity:0}}
+
+@media (prefers-reduced-motion:reduce){*,::before,::after{animation:none!important;transition:none!important}.glass{transform:none!important}}
+
+/* ===== Liquid glass façon Apple : verre clair, épaisseur de bord, reflets spéculaires ===== */
+@supports (backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px)){
+  .glass,nav,.top{
+    background:linear-gradient(135deg,rgba(255,255,255,.1),rgba(255,255,255,.015) 40%,rgba(255,255,255,.05)),rgba(255,255,255,.035);
+    -webkit-backdrop-filter:blur(14px) saturate(170%) brightness(1.06);backdrop-filter:blur(14px) saturate(170%) brightness(1.06)
+  }
+}
+.glass,nav,.top{box-shadow:inset 0 0 0 1px rgba(255,255,255,.1),inset 2px 2px 1px -1px rgba(255,255,255,.55),inset -2px -2px 1px -1px rgba(255,255,255,.28),inset 0 0 22px 2px rgba(255,255,255,.07),inset 0 -14px 24px -14px rgba(255,255,255,.1),0 1px 2px rgba(0,0,0,.2),var(--sx,0px) 18px 44px rgba(0,0,0,.32)}
+.glass::before,.top::before{padding:1px;background:radial-gradient(200px circle at var(--mx) var(--my),rgba(255,255,255,.8),transparent 60%),linear-gradient(135deg,rgba(255,255,255,.6),rgba(255,255,255,.04) 30%,rgba(255,255,255,.04) 68%,rgba(255,255,255,.4))}
+.glass::after,.top::after{background:radial-gradient(320px circle at var(--mx) var(--my),rgba(255,255,255,.14),transparent 65%)}
+.btn{background:rgba(255,255,255,.08);box-shadow:inset 1.5px 1.5px 1px -1px rgba(255,255,255,.6),inset -1px -1px 1px -1px rgba(255,255,255,.3),0 4px 14px rgba(0,0,0,.2)}
+.btn.main{background:linear-gradient(135deg,rgba(140,207,198,.3),rgba(155,151,214,.34))}
