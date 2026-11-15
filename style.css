@@ -339,3 +339,17 @@ a,button,label,input,select{touch-action:manipulation}
   @keyframes pop{from{opacity:0}}
   @keyframes dlg{from{opacity:0}}
 }
+
+/* ===== Téléphone : mode léger (pas de flou par carte, effets figés) ===== */
+@media (hover:none),(max-width:700px){
+  body::before{inset:0}
+  .scene .orb i{box-shadow:none;filter:none;opacity:.5;background:radial-gradient(circle at 36% 32%,color-mix(in srgb,var(--c) 70%,#fff),var(--c) 38%,transparent 70%)}
+  .orb i::after{display:none}
+  .glass,.top{-webkit-backdrop-filter:none;backdrop-filter:none;isolation:auto;
+    background:linear-gradient(135deg,rgba(255,255,255,.09),rgba(255,255,255,.02) 45%,rgba(255,255,255,.05)),rgba(22,25,40,.66);
+    box-shadow:inset 1.5px 1.5px 1px -1px rgba(255,255,255,.5),inset -1.5px -1.5px 1px -1px rgba(255,255,255,.22),inset 0 0 0 1px rgba(255,255,255,.1),0 6px 16px rgba(0,0,0,.25)}
+  nav{-webkit-backdrop-filter:blur(10px) saturate(150%);backdrop-filter:blur(10px) saturate(150%);background:rgba(22,25,40,.6)}
+  .glass::before,.glass::after,.top::before,.top::after{display:none}
+  .num{text-shadow:none}
+  .bar i{box-shadow:none}
+}
